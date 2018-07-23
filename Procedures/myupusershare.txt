@@ -1,0 +1,10 @@
+#upusershare after update
+begin
+		declare c double(10,2);
+		declare q int;
+		select presentcost into c from company where script=old.script;
+		set q:=old.qty-new.qty;
+		update ubal set balance=balance+(q*c) where userid=old.userid;
+                insert into sales values(old.script,q,now());
+                update company set quantity=quantity+q where script=old.script;
+end

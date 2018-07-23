@@ -1,0 +1,74 @@
+#changecost procedure
+
+begin
+	declare v_done boolean default false;
+	declare crh varchar(45);
+	declare crl varchar(45);
+	declare buffer int;
+	declare count int;
+	declare curhigh cursor for select 
+    script, sum(f1.qty) as q
+from
+    usershare as f1
+where
+     f1.`time` > date_sub(now(), interval 6 hour) group by f1.script
+having
+q > (select 
+            avg(f2.qty)
+        from
+            usershare as f2
+        where
+            f2.`time` > (date_sub(now(), interval 6 hour))) ORDER BY q DESC;
+	declare curlow cursor for select 
+    script, sum(f1.amnt) as q 
+from
+    sales as f1
+where
+     f1.`time` > date_sub(now(), interval 6 hour) group by f1.script
+having
+q > (select 
+            avg(f2.amnt)
+        from
+            sales as f2
+        where
+            f2.`time` > (date_sub(now(), interval 6 hour))) order by q desc;
+declare continue handler for not found set v_done := true;
+open curhigh;
+set count:=0;
+
+LOOPH: loop 
+fetch curhigh into crh,buffer;
+	if count<10 then
+		update company set presentcost= (presentcost+(rand()/60)) where script=crh;
+		set count:=count+1;
+	else
+		update company set presentcost= (presentcost+(rand()/100)) where script=crh;
+		set count:=count+1;
+	end if;
+	 if v_done then
+                close curhigh;
+                leave LOOPH;
+            end if; 
+end loop LOOPH;
+
+
+set count:=0;
+set v_done:=false;
+open curlow;
+
+LOOPL: loop 
+fetch curlow into crl,buffer;
+	if count<10 then
+		update company set presentcost= (presentcost-(rand()/60)) where script=crh;
+		set count:=count+1;
+	else
+		update company set presentcost= (presentcost-(rand()/100)) where script=crh;
+		set count:=count+1;
+	end if;
+	 if v_done then
+                close curlow;
+                leave LOOPL;
+            end if; 
+end loop LOOPL;
+
+end

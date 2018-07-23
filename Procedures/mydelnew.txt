@@ -1,0 +1,16 @@
+#delnew after delete on newsab
+begin
+	update company set presentcost=presentcost+(presentcost*(old.automotive*rand()/100)) where sector like '%automotive%';
+	update company set presentcost=presentcost+(presentcost*(old.telecommunication*rand()/100)) where sector like '%tele%';
+	update company set presentcost=presentcost+(presentcost*(old.electrical*rand()/100)) where sector like '%elec%';
+	update company set presentcost=presentcost+(presentcost*(old.pharma*rand()/100)) where sector like '%pharma%';
+	update company set presentcost=presentcost+(presentcost*(old.information*rand()/100)) where sector like '%information%';
+	update company set presentcost=presentcost+(presentcost*(old.metals*rand()/100)) where sector like '%metal%';
+	update company set presentcost=presentcost+(presentcost*(old.oil*rand()/100)) where sector like '%oil%';
+	update company set presentcost=presentcost+(presentcost*(old.banking*rand()/100)) where sector like '%banking%';
+	update company set presentcost=presentcost+(presentcost*(old.consumer*rand()/100)) where sector like '%consumer%';
+	update company set presentcost=presentcost+(presentcost*(old.conglomerate*rand()/100)) where sector like '%cong%';
+	update company set presentcost=presentcost+(presentcost*(old.power*rand()/100)) where sector like '%power%';
+	update company set presentcost=presentcost+(presentcost*(old.steel*rand()/100)) where sector like '%steel%';
+
+end

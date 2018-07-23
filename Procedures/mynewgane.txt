@@ -1,0 +1,17 @@
+#new game procedure
+begin 
+DECLARE done INT DEFAULT FALSE;
+declare used int;
+declare uname varchar(45);
+declare cur cursor for select `userid` from users;
+ DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+open cur;
+read_loop: LOOP
+    FETCH cur INTO used;
+    insert into ubal values(used,10000);
+    IF done THEN
+          LEAVE read_loop;
+        END IF;
+end LOOP;
+close cur;
+end

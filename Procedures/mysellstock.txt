@@ -1,0 +1,19 @@
+#sellstock procedure
+begin
+declare max int;
+declare tim datetime;
+select sum(qty) into max from usershare where userid=id and script=s;
+if(q<=max) then 
+while(q>0) do
+select qty, `time` into max,tim from usershare where userid=id and script=s and `time` = (select max(`time`) from usershare where userid=id and script=s);
+if (q<max) then
+	update usershare set qty=qty-q where userid=id and script=s and `time`=tim;
+	set q:=q-q;
+else
+	delete from usershare where userid=id and script=s and `time`=tim;
+	set q:=q-max;
+end if;
+end while;
+end if;
+
+end

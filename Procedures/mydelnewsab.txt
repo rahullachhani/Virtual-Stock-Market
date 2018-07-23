@@ -1,0 +1,2 @@
+#delnews procedure
+delete from newsab where news like '%'limit 1

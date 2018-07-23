@@ -1,0 +1,4 @@
+#vsmtimeover procedure
+begin
+	update company set startcost=presentcost ;
+end

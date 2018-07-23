@@ -1,0 +1,13 @@
+#inusershare before insert
+begin
+	declare temp int;
+        declare q int;
+	select balance into temp from ubal where userid= new.userid;
+	select quantity into q from company where script=new.script;
+        if (temp-(new.qty*new.cost)<0 or q<new.qty)then
+        	set new='Not enough Balance';
+        else
+		update ubal set balance=balance-(new.qty*new.cost) where userid=new.userid;
+		UPDATE company set quantity=quantity-new.qty where script=new.script;
+        end if;
+end
